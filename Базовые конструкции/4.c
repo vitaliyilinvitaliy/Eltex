@@ -9,14 +9,10 @@
 
 #include <stdio.h>
 
-#define N 7
+#define N 4
 
 
 int main(){
-    if(N%2 != 1){
-        return 1;
-    }
-
     int matrix[N*N] = {0};
 
     int counter = 1;
