@@ -64,10 +64,19 @@ void replace_byte(int *digit ,unsigned char rep_byte, unsigned char number_byte)
 }
 
 
+//Замена байта с помощью указателя
+void replace_byte_p(int *digit ,unsigned char rep_byte, unsigned char number_byte){
+    char *pd = (char*)digit;
+    if(number_byte < 3){
+        pd += number_byte;
+        *pd = rep_byte;
+    }
+}
+
 int main(){
     int a = 0x00AABBCC;
-
-    replace_byte(&a,0xDD,1);
+    print_bits_int(a);
+    replace_byte_p(&a,0xDD,1);
 
     print_bits_int(a);
     print_bytes(a);
