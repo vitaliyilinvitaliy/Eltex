@@ -1,3 +1,7 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "phbook.h"
 
 extern unsigned int size_phbk;

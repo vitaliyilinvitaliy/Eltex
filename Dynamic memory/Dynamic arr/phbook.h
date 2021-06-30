@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#ifndef _PHBOOK_H_
+#define _PHBOOK_H_
 
 #define N 50
 
@@ -13,5 +11,7 @@ struct phbook
 }*abonents;
 
 void clear_buffer();
+
+#endif
 
 

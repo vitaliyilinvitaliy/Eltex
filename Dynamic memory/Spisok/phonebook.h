@@ -14,6 +14,7 @@ void add_abonent();
 void search_abonent();
 void del_abonent();
 void print_dir();
+void free_list();
 
 #endif //_PHBOOK_H_
 

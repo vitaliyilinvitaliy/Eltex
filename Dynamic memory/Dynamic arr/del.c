@@ -1,3 +1,8 @@
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "phbook.h"
 #include "print_book.h"
 
@@ -22,6 +27,11 @@ void del_abonent(){//удаление абонента
         size_phbk--;
 
         abonents = realloc(abonents,size_phbk * sizeof(struct phbook));
+
+        if(abonents == 0){
+            perror("Del: Error realloc!\n");
+            exit(EXIT_FAILURE);
+        }
     }else{
         printf("Record with this number was not found!\n");
     }

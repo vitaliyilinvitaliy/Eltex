@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h> 
 #include <string.h>
+#include <malloc.h>
 
 #include "phonebook.h"
 
@@ -14,7 +15,13 @@ void add_abonent(){
     char surname[32];
     char phone[16];
 
-    struct phbook *record = malloc(sizeof(struct phbook));
+    struct phbook *record =(struct phbook*) malloc(sizeof(struct phbook));
+
+    if(record == 0){
+        perror("Add: Error malloc!\n");
+        exit(EXIT_FAILURE);
+    }
+
     record->next = NULL;
     record->prev = NULL;
 
@@ -150,4 +157,18 @@ void print_dir(){
     if(index == 0) printf("\n\t...Empty...\n");
 
     printf("\n...Press any key...");
+}
+
+
+void free_list(){
+    struct phbook *ptr = head;
+    struct phbook *del_el = NULL;
+
+    while(ptr != NULL){
+        del_el = ptr;
+        ptr = ptr -> next;
+        free(del_el);
+    }
+
+    head = NULL;
 }

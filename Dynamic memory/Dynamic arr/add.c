@@ -1,3 +1,8 @@
+#include <string.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "phbook.h"
 
 extern unsigned int size_phbk;
@@ -22,9 +27,14 @@ void add_abonent(){//добавление абонента
     scanf("%15s",phone);
     
     if(abonents == NULL){
-        abonents = malloc(sizeof(struct phbook));
+        abonents = (struct phbook*) malloc(sizeof(struct phbook));
     }else{
-        abonents = realloc(abonents,(size_phbk + 1) * sizeof(struct phbook));
+        abonents = (struct phbook*) realloc(abonents,(size_phbk + 1) * sizeof(struct phbook));
+    }
+
+    if(abonents == 0){
+        perror("Add: Error malloc\realloc!\n");
+        exit(EXIT_FAILURE);
     }
 
     clear_buffer();
@@ -33,6 +43,4 @@ void add_abonent(){//добавление абонента
     strcpy(abonents[size_phbk].phone,phone);
 
     size_phbk++;
-    
-        //printf("No memory, delete the entry!\n");
 }

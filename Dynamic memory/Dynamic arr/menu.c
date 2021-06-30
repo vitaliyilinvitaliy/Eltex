@@ -1,3 +1,7 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "phbook.h"
 #include "func.h"
 #include "print_book.h"
@@ -42,6 +46,7 @@ void menu(){
             break;
         
         case 5://ASKII код 53 (53 - 48 = 5)
+            free(abonents);
             exit(0);
             break;
         

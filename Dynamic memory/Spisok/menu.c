@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "phonebook.h"
 
@@ -17,7 +18,8 @@ void menu(){
         "Input 2 to add a subscriber\n"
         "Input 3 to delete the subscriber\n"
         "Input 4 to search for a subscriber\n"
-        "Input 5 to exit the program\n\n"
+        "Input 5 to delete phone book\n"
+        "Input 6 to exit the program\n\n"
         "Input: ");
         
         scanf("%c",&menu_item);
@@ -42,8 +44,13 @@ void menu(){
             search_abonent();
             getchar();
             break;
-        
+
         case 5://ASKII код 53 (53 - 48 = 5)
+            free_list();
+            break;
+
+        case 6://ASKII код 54 (54 - 48 = 6)
+            free_list();
             exit(0);
             break;
         
