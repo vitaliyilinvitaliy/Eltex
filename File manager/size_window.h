@@ -14,6 +14,10 @@ struct size_window
     unsigned short int r_vertical;
 };
 
+struct attr_subwindow{
+    unsigned short int horizontal;
+    unsigned short int vertical;
+};
 
 int SizeWindow(struct size_window *);
 
