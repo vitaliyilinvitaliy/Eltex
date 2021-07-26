@@ -1,15 +1,16 @@
-#include "size_window.h"
-#include "dir_list.h"
-#include "print_dir_list.h"
-#include "size_window.h"
-#include "color_string.h"
-#include "clear_subwindow.h"
-#include "start_process.h"
+#include "../terminal/size_window.h"
+#include "../directory/dir_list.h"
+#include "../directory/print_dir_list.h"
+#include "../window/color_string.h"
+#include "../window/clear_subwindow.h"
+#include "../process/start_process.h"
 #include "subwindow.h"
+#include "../terminal/term.h"
 
 #include <curses.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int Subwindow(WINDOW *win, char *directory, struct attr_subwindow atsubw){
     char **spis = NULL;
@@ -49,6 +50,10 @@ int Subwindow(WINDOW *win, char *directory, struct attr_subwindow atsubw){
             if(spis[index_str][0] == '/'){
                 
                 strcat(directory,spis[index_str]);//stack smash!!!!!
+                
+                chdir(directory);
+                getcwd(directory, 256);
+
                 len_dir = strlen(directory);
                 wmove(win,0,atsubw.horizontal/4);
 
@@ -71,16 +76,18 @@ int Subwindow(WINDOW *win, char *directory, struct attr_subwindow atsubw){
                 free(spis);
                 spis = NULL;
                 ClearSbw(win, atsubw.horizontal, atsubw.vertical);
-
+                
                 len_list = DirList(directory, &spis);
                 PrintDirList(win, spis, len_list);
 
                 index_str = 0;
                 ColorString(win,spis[index_str],index_str,ON_STR);
             }else{
-                StartProcess(win, directory, spis[index_str]);
-                ch = REFRESH_WIN;
-                flag_break = TRUE;
+                if(TermStoreDefault() == 0){
+                    StartProcess(win, directory, spis[index_str]);
+                    ch = REFRESH_WIN;
+                    flag_break = TRUE;
+                }                
             }
             break;
         case KEY_F(1):

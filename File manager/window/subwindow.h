@@ -1,7 +1,7 @@
 #ifndef _SUBWINDOW_H_
 #define _SUBWINDOW_H_
 
-#include "size_window.h"
+#include "../terminal/size_window.h"
 
 #include <curses.h>
 

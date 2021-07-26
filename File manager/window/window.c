@@ -1,8 +1,9 @@
-#include "sig_winch.h"
-#include "size_window.h"
-#include "dir_list.h"
-#include "subwindow.h"
-#include "print_dir_list.h"
+#include "../terminal/sig_winch.h"
+#include "../terminal/size_window.h"
+#include "../directory/dir_list.h"
+#include "../window/subwindow.h"
+#include "../directory/print_dir_list.h"
+#include "../terminal/term.h"
 
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -11,6 +12,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void window(void){
     WINDOW *foundation;
@@ -18,14 +20,20 @@ void window(void){
     WINDOW *right;
     WINDOW *activ;
 
+    TermSaveDefault();
+
     int ch = 0;
     struct size_window *size_l_r;
     struct attr_subwindow atsubw;
 
-    char dir_l[256] = ".";
-    char dir_r[256] = ".";
+    char dir_l[256]/* = "."*/;
+    char dir_r[256]/* = "."*/;
 
-    char dir[256] = ".";
+    char dir[256]/* = "."*/;
+
+    getcwd(dir_l, 256);
+    getcwd(dir_r, 256);
+    getcwd(dir, 256);
 
     size_l_r = calloc(sizeof(struct size_window), 1);
 
@@ -68,6 +76,8 @@ void window(void){
     atsubw.vertical =  size_l_r->l_vertical;
     
     halfdelay(1);
+
+    TermSaveMyConf();
     //(ch = wgetch(activ)) != KEY_F(1)
     while((ch = Subwindow(activ, dir, atsubw)) != KEY_F(1)){
         
@@ -90,8 +100,10 @@ void window(void){
             } 
             break;
         case REFRESH_WIN:
-            noecho();
-            curs_set(FALSE);
+            //noecho();
+            //curs_set(FALSE);
+
+            TermStoreMyConf();
 
             refresh();
             box(foundation, 0, 0);
