@@ -32,15 +32,15 @@ void logic(char *digit, char read_digit, enum Keys input_key){
         }else{
             switch (input_key)
             {
-            case KeysPlus:
+            case KeysOp1:
                 flag_pmdm = (flag_pmdm == 0)? 1 : 2;
                 sign_operation = '+';
                 break;
-            case KeysMinus:
+            case KeysOp2:
                 flag_pmdm = (flag_pmdm == 0)? 1 : 2;
                 sign_operation = '-';
                 break;
-            case KeysMult:
+            case KeysOp3:
                 flag_pmdm = (flag_pmdm == 0)? 1 : 2;
                 sign_operation = '*';
                 break;
@@ -61,7 +61,7 @@ void logic(char *digit, char read_digit, enum Keys input_key){
                 }
                 
                 break;
-            case KeysDiv:
+            case KeysOp4:
                 flag_pmdm = (flag_pmdm == 0)? 1 : 2; 
                 sign_operation = '/';
                 break;

@@ -15,10 +15,10 @@ folder_dynamic:
 	mkdir -p libs_dynamic
 
 main_dynamic: build/main.o interface build/add.o build/minus.o build/mult.o build/div.o
-	gcc build/main.o -o main_dynamic -L./libs_static/ -linterface  -L./libs_dynamic/ -ladd -lmult -lminus -ldiv  -ggdb3
+	gcc build/main.o -o main_dynamic -L./libs_static/ -linterface  -L./libs_dynamic/ -ldl  -ggdb3
 
-interface: build/interface.o build/clearscreen.o build/gotoxy.o build/box.o build/getscreensize.o build/button.o build/color.o build/keyboard.o build/display.o build/terminal.o build/displaylogic.o build/operations.o
-	ar cr libs_static/libinterface.a build/interface.o build/clearscreen.o build/gotoxy.o build/box.o build/getscreensize.o build/button.o build/color.o build/keyboard.o build/display.o build/terminal.o build/displaylogic.o build/operations.o
+interface: build/interface.o build/clearscreen.o build/gotoxy.o build/box.o build/getscreensize.o build/button.o build/color.o build/keyboard.o build/display.o build/terminal.o build/displaylogic.o build/operations.o build/clearbuf.o
+	ar cr libs_static/libinterface.a build/interface.o build/clearscreen.o build/gotoxy.o build/box.o build/getscreensize.o build/button.o build/color.o build/keyboard.o build/display.o build/terminal.o build/displaylogic.o build/operations.o build/clearbuf.o
 
 operation_dynamic: build/add.o build/minus.o build/mult.o build/div.o libs_dynamic/libadd.so libs_dynamic/libminus.so libs_dynamic/libmult.so libs_dynamic/libdiv.so
 
@@ -60,6 +60,9 @@ build/displaylogic.o: interface/displaylogic.c
 	$(OBJ)
 
 build/operations.o: operations/operation.c 
+	$(OBJ)
+
+build/clearbuf.o: interface/clearbuf.c 
 	$(OBJ)
 
 

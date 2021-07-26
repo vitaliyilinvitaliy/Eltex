@@ -5,26 +5,26 @@ enum Keys{
     Keys7,
     Keys8,
     Keys9,
-    KeysPlus,
+    KeysOp1,
     Keys4,
     Keys5,
     Keys6,
-    KeysMinus,
+    KeysOp2,
     Keys1,
     Keys2,
     Keys3,
-    KeysMult,
+    KeysOp3,
     KeysClear,
     Keys0,
     KeysEqual,
-    KeysDiv,
+    KeysOp4,
     KeysDefault,
     KeysExit
 };
 
 void keyboard(int x, int y, enum Keys key);
 char readkey(enum Keys *Key);
-
-
+void setbutton(unsigned int number, char symbol);
+void setcountoper(unsigned int count);
 
 #endif //_KEYBOARD_H_

@@ -4,7 +4,14 @@
 #include "color.h"
 #include "keyboard.h"
 
-const char buttons[4][4] = {"789+","456-","123*","c0=/"};
+static char buttons[4][4] = {"789 ","456 ","123 ","c0= "};
+static unsigned int count_oper = 0;
+
+void setbutton(unsigned int number, char symbol){
+    if(number < 4){
+        buttons[number][3] = symbol;
+    }
+}
 
 char readkey(enum Keys *Key){
     char buffer[8] = {0};
@@ -14,16 +21,16 @@ char readkey(enum Keys *Key){
     switch (buffer[0])
     {
     case '*':
-        (*Key) = KeysMult;
+        (*Key) = (count_oper >= 3)? KeysOp3 : KeysDefault;
         break;
     case '+':
-        (*Key) = KeysPlus;
+        (*Key) = (count_oper >= 1)? KeysOp1 : KeysDefault;
         break;
     case '-':
-        (*Key) = KeysMinus;
+        (*Key) = (count_oper >= 2)? KeysOp2 : KeysDefault;
         break;    
     case '/':
-        (*Key) = KeysDiv;
+        (*Key) = (count_oper == 4)? KeysOp4 : KeysDefault;
         break;
     case '0':
         (*Key) = Keys0;
@@ -70,7 +77,6 @@ char readkey(enum Keys *Key){
     }
 
     return buffer[0];
-
 }
 
 
@@ -85,4 +91,9 @@ void keyboard(int x, int y, enum Keys key){
         y += 3;
     }
     
+}
+
+
+void setcountoper(unsigned int count){
+    count_oper = (count <= 4)? count : 0;
 }
