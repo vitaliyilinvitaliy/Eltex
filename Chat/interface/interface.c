@@ -4,7 +4,6 @@
 
 #include "./chat/window_chat.h"
 #include "./input/window_input.h"
-#include "./foundation/window_foundation.h"
 #include "./color/init_color.h"
 #include "./registration/registration.h"
 #include "../message/receive_message.h"
@@ -32,10 +31,14 @@ int Interface(void){
     struct size_window *size_chat_input = NULL;
     size_chat_input = (struct size_window*) malloc(sizeof(struct size_window));
 
-    struct my_parameters *my_param;
+    struct my_parameters *my_param = NULL;
     my_param = (struct my_parameters*) malloc(sizeof(struct my_parameters));
 
-    GetParamsMessage(my_param);
+    struct parameters_system_v *my_queue = NULL;
+    my_queue = (struct parameters_system_v*) malloc(sizeof(struct parameters_system_v));
+
+    CreateQueueSystemV(my_queue);
+    (*my_param).parameters_queue = my_queue;
 
     if(SizeWindow(size_chat_input) == 1){
         exit(EXIT_FAILURE);
@@ -85,9 +88,9 @@ int Interface(void){
 
     (*my_param).online = online;
 
-    pthread_t tid;
+    pthread_t tid; 
 
-    int thread_receive = pthread_create(&tid, NULL, ReceiveMessage, my_param);
+    int thread_receive = pthread_create(&tid, NULL, ReceiveMessageSystemV, my_param);
     pthread_detach(tid);
 
     Input(input, my_param);
@@ -98,9 +101,11 @@ int Interface(void){
 
     TermStoreDefault();
 
-    free(size_chat_input);
+    int ctl_stat = msgctl((*my_queue).my_queue_id, IPC_RMID, NULL);
 
-    int ctl_stat = msgctl((*my_param).my_queue_id, IPC_RMID, NULL);
+    free(size_chat_input);
+    free(my_queue);
+    free(my_param);
 
     if(ctl_stat == -1){
         perror("ctl");

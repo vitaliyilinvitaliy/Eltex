@@ -1,6 +1,8 @@
 #ifndef _WINDOW_INPUT_H_
 #define _WINDOW_INPUT_H_
 
+#include "../../message/message.h"
+
 #include <ncurses.h>
 
 int InitInput(int, int, int, int);

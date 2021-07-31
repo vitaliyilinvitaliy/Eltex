@@ -4,7 +4,9 @@
 #include "message.h"
 
 #include <stdlib.h>
+#include <mqueue.h>
 
-int SendMessage(char *, struct my_parameters);
+int SendMessageSystemV(char *, struct my_parameters);
+int SendMessagePOSIX(char *, mqd_t);
 
 #endif //_SEND_MESSAGE_H_

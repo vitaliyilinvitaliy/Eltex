@@ -1,8 +1,3 @@
-/*
- * server.c: Server program
- *           to demonstrate interprocess commnuication
- *           with System V message queues
- */
 #include "../message/message.h"
 
 #include <stdio.h>
@@ -27,10 +22,6 @@ int main(int argc, char **argv)
     struct message message_online;
 
     size_t count_client = 0;
-
-    /*struct client *mass_client = NULL;
-
-    mass_client = calloc(sizeof(struct client), 1);*/
 
     struct client mass_client[10];
 
@@ -74,7 +65,7 @@ int main(int argc, char **argv)
         
             for(int i = 0; i < count_client; i++){
                 if (msgsnd (mass_client[i].client_queue_id, &message_online, sizeof (struct message_text), 0) == -1) {  
-                    perror ("msgget");
+                    perror ("msgsnd");
                     exit (1);
                 }
             }
@@ -91,7 +82,7 @@ int main(int argc, char **argv)
 
         for(int i = 0; i < count_client && message.message_type != 2; i++){
             if (msgsnd (mass_client[i].client_queue_id, &message, sizeof (struct message_text), 0) == -1) {  
-                perror ("msgget");
+                perror ("msgsnd");
                 exit (1);
             }
             

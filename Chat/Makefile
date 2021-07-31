@@ -4,8 +4,8 @@ B=build/
 chat: clean folders client
 
 
-client: build/client.o build/sig_winch.o build/interface.o build/window_chat.o build/window_foundation.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o
-	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_foundation.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o -lncurses -lpthread -o client -ggdb3
+client: build/client.o build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o
+	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o -lncurses -lpthread -o client -ggdb3
 
 build/client.o: client.c
 	$(OBJ)
@@ -27,9 +27,6 @@ build/interface.o: ./interface/interface.c
 	$(OBJ)
 
 build/window_chat.o: ./interface/chat/window_chat.c
-	$(OBJ)
-
-build/window_foundation.o: ./interface/foundation/window_foundation.c
 	$(OBJ)
 
 build/window_input.o: ./interface/input/window_input.c
