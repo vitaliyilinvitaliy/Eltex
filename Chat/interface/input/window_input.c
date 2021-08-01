@@ -48,7 +48,8 @@ int Input(WINDOW *win, struct my_parameters *params){
                 break;
 
             case 10://'\n'
-                SendMessageSystemV(message, (*params));
+                //SendMessageSystemV(message, (*params));
+                SendMessagePOSIX(message, (*params));
                 pos = 0;
                 pos_x = 1;
                 pos_y = 1;

@@ -101,7 +101,7 @@ void *ReceiveMessagePOSIX(void *args){
     }
 
     strncpy(message, (*my_param).name, 20);
-    message[strlen((*my_param).name)] = '\n';
+    message[strlen((*my_param).name)] = '\0';
     
     snd_stat = mq_send((*queue_param).server_queue_id, message, strlen(message), PRIORITY_ONLINE);
 
@@ -120,7 +120,9 @@ void *ReceiveMessagePOSIX(void *args){
             break;
         }
 
-        if(priority_message == PRIORITY_ONLINE){
+        switch (priority_message)
+        {
+        case PRIORITY_ONLINE:
             for(int i = 0, x_str = 1; i < strlen(message); i++, x_str++){
                 mvwaddch((*my_param).online, pos_y_online, x_str, message[i]);
                 if(x_str == 20 || message[i] == '\n'){
@@ -130,13 +132,17 @@ void *ReceiveMessagePOSIX(void *args){
             }
             pos_y_online = 1;
             wrefresh((*my_param).online);
-        }else{
+            break;
+        case PRIORITY_MESSAGE:
             for(int i = 0; i < strlen(message); i++){
                 mvwaddch((*my_param).chat, pos_y_chat, i + 1, message[i]);
             }
             pos_y_chat++;
             wrefresh((*my_param).chat);
+        default:
+            break;
         }
 
+        priority_message = -1;
     }
 }

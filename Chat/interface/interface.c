@@ -34,11 +34,16 @@ int Interface(void){
     struct my_parameters *my_param = NULL;
     my_param = (struct my_parameters*) malloc(sizeof(struct my_parameters));
 
+    /*
     struct parameters_system_v *my_queue = NULL;
     my_queue = (struct parameters_system_v*) malloc(sizeof(struct parameters_system_v));
+    */
 
-    CreateQueueSystemV(my_queue);
-    (*my_param).parameters_queue = my_queue;
+    struct parameters_POSIX *my_queue = NULL;
+    my_queue = (struct parameters_POSIX*) malloc(sizeof(struct parameters_POSIX));
+
+    //CreateQueueSystemV(my_queue);
+    //(*my_param).parameters_queue = my_queue;
 
     if(SizeWindow(size_chat_input) == 1){
         exit(EXIT_FAILURE);
@@ -88,9 +93,13 @@ int Interface(void){
 
     (*my_param).online = online;
 
+    CreateQueuePOSIX((*my_param).name, my_queue);
+    (*my_param).parameters_queue = my_queue;
+
     pthread_t tid; 
 
-    int thread_receive = pthread_create(&tid, NULL, ReceiveMessageSystemV, my_param);
+    //int thread_receive = pthread_create(&tid, NULL, ReceiveMessageSystemV, my_param);
+    int thread_receive = pthread_create(&tid, NULL, ReceiveMessagePOSIX, my_param);
     pthread_detach(tid);
 
     Input(input, my_param);

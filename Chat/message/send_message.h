@@ -7,6 +7,6 @@
 #include <mqueue.h>
 
 int SendMessageSystemV(char *, struct my_parameters);
-int SendMessagePOSIX(char *, mqd_t);
+int SendMessagePOSIX(char *, struct my_parameters);
 
 #endif //_SEND_MESSAGE_H_

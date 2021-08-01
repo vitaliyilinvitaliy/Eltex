@@ -5,7 +5,7 @@ chat: clean folders client
 
 
 client: build/client.o build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o
-	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o -lncurses -lpthread -o client -ggdb3
+	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/send_message.o build/receive_message.o build/message.o -lncurses -lpthread -lrt -o client -ggdb3
 
 build/client.o: client.c
 	$(OBJ)

@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
     printf ("Server: Hello, World!\n");
 
-    while (1) {
+    while (count_client < 10) {
         // read an incoming message
         int flag_client = 0;
 

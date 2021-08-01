@@ -68,7 +68,7 @@ int CreateQueuePOSIX(char *user_name,struct parameters_POSIX *params){
         exit(EXIT_FAILURE);
     }
 
-    mqd_t server_queue_id = my_open(SERVER_NAME, O_RDWR, &server_attr);
+    mqd_t server_queue_id = mq_open(SERVER_NAME, O_RDWR, &server_attr);
 
     if(server_queue_id == -1){
         perror("server open");
