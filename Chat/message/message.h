@@ -51,6 +51,6 @@ struct my_parameters{
 //System V 
 int CreateQueueSystemV(struct parameters_system_v *);
 //POSIX
-int CreateQueuePOSIX(char *user_name,struct parameters_POSIX *params);
+int CreateQueuePOSIX(char *user_name, struct parameters_POSIX *params);
 
 #endif //_MESSAGE_H_

@@ -1,3 +1,5 @@
+#include "../client.h"
+
 #include "../terminal/term.h"
 #include "../terminal/size_window.h"
 #include "../terminal/sig_winch.h"
@@ -18,6 +20,8 @@
 #include <pthread.h>
 #include <string.h>
 
+
+
 int Interface(void){
 
     char user_name[20];
@@ -34,16 +38,8 @@ int Interface(void){
     struct my_parameters *my_param = NULL;
     my_param = (struct my_parameters*) malloc(sizeof(struct my_parameters));
 
-    /*
-    struct parameters_system_v *my_queue = NULL;
-    my_queue = (struct parameters_system_v*) malloc(sizeof(struct parameters_system_v));
-    */
-
-    struct parameters_POSIX *my_queue = NULL;
-    my_queue = (struct parameters_POSIX*) malloc(sizeof(struct parameters_POSIX));
-
-    //CreateQueueSystemV(my_queue);
-    //(*my_param).parameters_queue = my_queue;
+    struct struct_type *my_queue = NULL;
+    my_queue = (struct struct_type*) malloc(sizeof(struct struct_type));
 
     if(SizeWindow(size_chat_input) == 1){
         exit(EXIT_FAILURE);
@@ -92,14 +88,20 @@ int Interface(void){
     wrefresh(online);
 
     (*my_param).online = online;
+    
+    #if REALIZATION == POSIX
+        CreateQueuePOSIX((*my_param).name, my_queue);
+    #endif //POSIX
 
-    CreateQueuePOSIX((*my_param).name, my_queue);
+    #if REALIZATION == SYSTEM_V
+        CreateQueueSystemV(my_queue);
+    #endif //SYSTEM_V
+    
     (*my_param).parameters_queue = my_queue;
 
     pthread_t tid; 
 
-    //int thread_receive = pthread_create(&tid, NULL, ReceiveMessageSystemV, my_param);
-    int thread_receive = pthread_create(&tid, NULL, ReceiveMessagePOSIX, my_param);
+    int thread_receive = pthread_create(&tid, NULL, ReceiveMessage, my_param);
     pthread_detach(tid);
 
     Input(input, my_param);

@@ -1,4 +1,5 @@
 #include "../../message/send_message.h"
+#include "../../client.h"
 
 #include <ncurses.h>
 #include <stdlib.h>
@@ -48,8 +49,7 @@ int Input(WINDOW *win, struct my_parameters *params){
                 break;
 
             case 10://'\n'
-                //SendMessageSystemV(message, (*params));
-                SendMessagePOSIX(message, (*params));
+                SendMessage(message, (*params));
                 pos = 0;
                 pos_x = 1;
                 pos_y = 1;
