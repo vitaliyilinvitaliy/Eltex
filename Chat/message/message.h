@@ -1,18 +1,31 @@
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
 
+#include "../client.h"
+
 #include <sys/ipc.h>
 #include <ncurses.h>
 #include <mqueue.h>
 
-//System V 
+#define MODE 0666//0777//0660  00644
+
+//Shared memory System V
+#define SHARED_MEM_KEY 30002
+#define SEMAPHORE_KEY 4000
+#define SEMAPHORE_SERVER_KEY 4001
+
+#define FALSE_MESSAGE 1
+#define TRUE_MESSAGE 2
+#define ONLINE_MESSAGE 3
+#define STOP_SERVER 4
+
+//System V
 #define PATH_QUEUE "./queue.txt"
 #define PROJECT_ID 'A'
-#define QUEUE_PERMISSIONS 0660
 
 //POSIX
 #define SERVER_NAME "/server"
-#define MODE 00644
+
 #define PRIORITY_ONLINE 1
 #define PRIORITY_MESSAGE 2
 
@@ -40,6 +53,28 @@ struct parameters_system_v{
     int my_queue_id;
 };
 
+//Shared memory
+struct shared_message{
+    unsigned int type_message;
+    char message_text[256];
+    char online_list[256];
+    int id_shar_mem;
+    int id_sem_shm;
+};
+
+struct parameters_shmem_system_v{
+    int id_shmem;
+    int id_sem;
+    int id_serv_shmem;
+    int id_serv_sem;
+    struct shared_message *ptr_shmem;
+    struct shared_message *ptr_serv_shmem;  
+};
+
+/*struct parameters_shmem_POSIX{
+    
+};*/
+
 //Общее
 struct my_parameters{
     WINDOW *chat;
@@ -50,7 +85,18 @@ struct my_parameters{
 
 //System V 
 int CreateQueueSystemV(struct parameters_system_v *);
+int SendMessageSystemV(char *, struct my_parameters);
+void *ReceiveMessageSystemV(void *);
+
 //POSIX
-int CreateQueuePOSIX(char *user_name, struct parameters_POSIX *params);
+int CreateQueuePOSIX(char *, struct parameters_POSIX *);
+int SendMessagePOSIX(char *, struct my_parameters);
+void *ReceiveMessagePOSIX(void *);
+
+//Shared memory
+int CreateShMemSystemV(struct parameters_shmem_system_v *);
+int SendMessageShMemSystemV(char *, struct my_parameters);
+void *ReceiveMessageShMemSystemV(void *);
+
 
 #endif //_MESSAGE_H_

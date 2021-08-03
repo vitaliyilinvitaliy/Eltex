@@ -1,4 +1,5 @@
 #include "../message/message.h"
+#include "../message/message.h"
 
 #include <sys/stat.h>
 #include <mqueue.h>
@@ -8,6 +9,8 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+
+#define SERVER_NAME "/server"
 
 struct client{
     mqd_t client_queue_id;
@@ -32,7 +35,7 @@ int main(void){
     server_attr.mq_msgsize = 256;
     server_attr.mq_curmsgs = 0;
 
-    mqd_t server_queue = mq_open(SERVER_NAME, O_CREAT|O_RDWR|O_NONBLOCK, 00644, &server_attr);
+    mqd_t server_queue = mq_open(SERVER_NAME, O_CREAT|O_RDWR|O_NONBLOCK, MODE, &server_attr);
 
     if(server_queue == -1){
         perror("open server");

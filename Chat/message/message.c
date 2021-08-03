@@ -8,7 +8,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <sys/shm.h>
+#include <sys/sem.h>
+
 #include <stdlib.h>
+#include <unistd.h>
 
 int CreateQueueSystemV(struct parameters_system_v *params){
     key_t server_queue_key;
@@ -18,7 +22,7 @@ int CreateQueueSystemV(struct parameters_system_v *params){
     int send_stat = 0;
     int ctl_stat = 0;
 
-    my_queue_id = msgget(IPC_PRIVATE, QUEUE_PERMISSIONS);
+    my_queue_id = msgget(IPC_PRIVATE, MODE);
 
     if(my_queue_id == -1){
         perror("my q id");
@@ -81,3 +85,77 @@ int CreateQueuePOSIX(char *user_name,struct parameters_POSIX *params){
     return 0;
 }
 
+
+int CreateShMemSystemV(struct parameters_shmem_system_v *params){
+    int id_shmem = -1;
+    int id_sem = -1;
+    int id_serv_shmem = -1;
+    int id_serv_sem = -1;
+
+    struct shared_message *ptr_shmem = NULL;
+    struct shared_message *ptr_serv_shmem = NULL;
+
+    key_t key_shared_mem = shmget(IPC_PRIVATE, sizeof(struct shared_message), IPC_CREAT|MODE);
+
+    if(key_shared_mem == -1){
+        perror("shmget private");
+        exit(EXIT_FAILURE);
+    }
+
+    key_t key_serv_shared_mem = ftok(PATH_QUEUE, PROJECT_ID);
+
+    if(key_serv_shared_mem == -1){
+        perror("ftok serv");
+        exit(EXIT_FAILURE);
+    }
+
+    id_shmem = shmget(key_shared_mem, sizeof(struct shared_message), IPC_CREAT|MODE);
+
+    if(id_shmem == -1){
+        perror("shmget");
+        exit(EXIT_FAILURE);
+    }
+
+    id_serv_shmem = shmget(key_serv_shared_mem, sizeof(struct shared_message), IPC_RMID|MODE);
+
+    if(id_serv_shmem == -1){
+        perror("shmget serv");
+        exit(EXIT_FAILURE);
+    }
+
+    id_sem = semget(getpid(), 1, IPC_CREAT|MODE);
+
+    if(id_sem == -1){
+        perror("semget");
+        exit(EXIT_FAILURE);
+    }
+
+    id_serv_sem = semget(SEMAPHORE_SERVER_KEY, 1, MODE);
+
+    if(id_serv_sem == -1){
+        perror("semget serv");
+        exit(EXIT_FAILURE);
+    }
+
+    ptr_shmem = shmat(id_shmem, 0, 0);
+
+    if(ptr_shmem == NULL){
+        perror("shmat");
+        exit(EXIT_FAILURE);
+    }
+
+    ptr_serv_shmem = shmat(id_serv_shmem, 0, 0);
+
+    if(ptr_serv_shmem == NULL){
+        perror("shmat serv");
+        exit(EXIT_FAILURE);
+    }
+
+    (*params).id_sem = id_sem;
+    (*params).id_shmem = id_shmem;
+    (*params).ptr_shmem = ptr_shmem;
+    (*params).id_serv_sem = id_serv_sem;
+    (*params).id_serv_shmem = id_serv_shmem;
+    (*params).ptr_serv_shmem = ptr_serv_shmem;
+
+}

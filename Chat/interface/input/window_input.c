@@ -1,8 +1,9 @@
-#include "../../message/send_message.h"
 #include "../../client.h"
+#include "../../message/message.h"
 
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 
 static int w_x = 0;
 static int w_y = 0;
@@ -50,6 +51,9 @@ int Input(WINDOW *win, struct my_parameters *params){
 
             case 10://'\n'
                 SendMessage(message, (*params));
+
+                memset(message, 0, 256);
+
                 pos = 0;
                 pos_x = 1;
                 pos_y = 1;

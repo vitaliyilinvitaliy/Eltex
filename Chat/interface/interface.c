@@ -8,7 +8,6 @@
 #include "./input/window_input.h"
 #include "./color/init_color.h"
 #include "./registration/registration.h"
-#include "../message/receive_message.h"
 #include "../message/message.h"
 
 #include <ncurses.h>
@@ -17,13 +16,15 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/msg.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
 #include <pthread.h>
 #include <string.h>
 
 
 
 int Interface(void){
-
+    int ctl_stat = -1;
     char user_name[20];
 
     WINDOW *chat = NULL;
@@ -96,6 +97,10 @@ int Interface(void){
     #if REALIZATION == SYSTEM_V
         CreateQueueSystemV(my_queue);
     #endif //SYSTEM_V
+
+    #if REALIZATION == SHARED_MEMORY
+        CreateShMemSystemV(my_queue);
+    #endif //SHARED_MEMORY
     
     (*my_param).parameters_queue = my_queue;
 
@@ -112,22 +117,46 @@ int Interface(void){
 
     TermStoreDefault();
 
-    int ctl_stat = msgctl((*my_queue).my_queue_id, IPC_RMID, NULL);
+    #if REALIZATION == POSIX
+        //ctl_stat = ;
+    #endif //POSIX
+
+    #if REALIZATION == SYSTEM_V
+        //ctl_stat = ;
+    #endif //SYSTEM_V
+
+    #if REALIZATION == SHARED_MEMORY
+        ctl_stat = semctl((*my_queue).id_sem, 0, IPC_RMID, NULL);
+
+        if(ctl_stat == -1){
+            perror("ctl");
+            exit(EXIT_FAILURE);
+        }
+
+        ctl_stat = shmctl((*my_queue).id_shmem, IPC_RMID, NULL);
+
+        if(ctl_stat == -1){
+            perror("ctl");
+            exit(EXIT_FAILURE);
+        }
+
+        shmdt((*my_queue).ptr_shmem);
+        shmdt((*my_queue).ptr_serv_shmem);
+    
+    #endif //SHARED_MEMORY
+    
 
     free(size_chat_input);
     free(my_queue);
     free(my_param);
 
-    if(ctl_stat == -1){
-        perror("ctl");
-        exit(EXIT_FAILURE);
-    }
+    
 
-    pid_t clear_pid = fork();
-    if(clear_pid == 0){
-        exit(execlp("clear", "clear", NULL));        
-    }else{
+    //pid_t clear_pid = fork();
+    //if(clear_pid == 0){
+    //    exit(execlp("clear", "clear", NULL));        
+    //}else{
         return EXIT_SUCCESS;
-    }
+    //}
 
 }
