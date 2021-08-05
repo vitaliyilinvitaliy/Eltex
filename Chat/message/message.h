@@ -7,6 +7,8 @@
 #include <ncurses.h>
 #include <mqueue.h>
 
+#include <semaphore.h>
+
 #define MODE 0666//0777//0660  00644
 
 //Shared memory System V
@@ -53,8 +55,8 @@ struct parameters_system_v{
     int my_queue_id;
 };
 
-//Shared memory
-struct shared_message{
+//Shared memory System V
+struct shared_message_system_v{
     unsigned int type_message;
     char message_text[256];
     char online_list[256];
@@ -62,18 +64,33 @@ struct shared_message{
     int id_sem_shm;
 };
 
+//Shared memory POSIX
+struct shared_message_POSIX{
+    unsigned int type_message;
+    char message_text[256];
+    char online_list[256];
+};
+
+
+//Shared memory System V
 struct parameters_shmem_system_v{
     int id_shmem;
     int id_sem;
     int id_serv_shmem;
     int id_serv_sem;
-    struct shared_message *ptr_shmem;
-    struct shared_message *ptr_serv_shmem;  
+    struct shared_message_system_v *ptr_shmem;
+    struct shared_message_system_v *ptr_serv_shmem;  
 };
 
-/*struct parameters_shmem_POSIX{
-    
-};*/
+//Shared memory POSIX
+struct parameters_shmem_POSIX{
+    int id_shmem;
+    sem_t *sem;
+    int id_serv_shmem;
+    sem_t *serv_sem;
+    struct shared_message_POSIX *ptr_shmem;
+    struct shared_message_POSIX *ptr_serv_shmem; 
+};
 
 //Общее
 struct my_parameters{
@@ -93,10 +110,15 @@ int CreateQueuePOSIX(char *, struct parameters_POSIX *);
 int SendMessagePOSIX(char *, struct my_parameters);
 void *ReceiveMessagePOSIX(void *);
 
-//Shared memory
+//Shared memory System V
 int CreateShMemSystemV(struct parameters_shmem_system_v *);
 int SendMessageShMemSystemV(char *, struct my_parameters);
 void *ReceiveMessageShMemSystemV(void *);
+
+//Shared memory POSIX
+int CreateShMemPOSIX(char *, struct parameters_shmem_POSIX *);
+int SendMessageShMemPOSIX(char *, struct my_parameters);
+void *ReceiveMessageShMemPOSIX(void *);
 
 
 #endif //_MESSAGE_H_

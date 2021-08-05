@@ -4,8 +4,8 @@ B=build/
 chat: clean folders client
 
 
-client: build/client.o build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/message.o build/receive_message_system_v.o build/receive_message_posix.o build/send_message_system_v.o build/send_message_posix.o build/send_message_shmem_system_v.o build/receive_message_shmem_system_v.o
-	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o  build/message.o build/receive_message_system_v.o build/receive_message_posix.o build/send_message_system_v.o build/send_message_posix.o build/send_message_shmem_system_v.o build/receive_message_shmem_system_v.o -lncurses -lpthread -lrt -o client -ggdb3
+client: build/client.o build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o build/message.o build/receive_message_system_v.o build/receive_message_posix.o build/send_message_system_v.o build/send_message_posix.o build/send_message_shmem_system_v.o build/receive_message_shmem_system_v.o build/send_message_shmem_posix.o build/receive_message_shmem_posix.o
+	gcc build/client.o  build/sig_winch.o build/interface.o build/window_chat.o build/window_input.o build/size_window.o build/term.o build/init_color.o build/registration.o  build/message.o build/receive_message_system_v.o build/receive_message_posix.o build/send_message_system_v.o build/send_message_posix.o build/send_message_shmem_system_v.o build/receive_message_shmem_system_v.o build/send_message_shmem_posix.o build/receive_message_shmem_posix.o -lncurses -lpthread -lrt -o client -ggdb3
 
 build/client.o: client.c
 	$(OBJ)
@@ -57,6 +57,12 @@ build/send_message_shmem_system_v.o: ./message/send_message_shmem_system_v.c
 	$(OBJ)
 
 build/receive_message_shmem_system_v.o: ./message/receive_message_shmem_system_v.c
+	$(OBJ)
+
+build/send_message_shmem_posix.o: ./message/send_message_shmem_posix.c
+	$(OBJ)
+
+build/receive_message_shmem_posix.o: ./message/receive_message_shmem_posix.c
 	$(OBJ)
 
 clean:

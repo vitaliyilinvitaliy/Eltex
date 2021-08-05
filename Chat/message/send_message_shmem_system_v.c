@@ -19,13 +19,12 @@ int SendMessageShMemSystemV(char *message, struct my_parameters params){
     int id_sem_serv = (*shmem_par).id_serv_sem;
     int id_shm_serv = (*shmem_par).id_serv_shmem;
 
-    struct shared_message *ptr_shmem_serv = (struct shared_message *) (*shmem_par).ptr_serv_shmem;
+    struct shared_message_system_v *ptr_shmem_serv = (struct shared_message_system_v *) (*shmem_par).ptr_serv_shmem;
 
     while (semctl(id_sem_serv, 0, GETVAL, 0) && (*ptr_shmem_serv).type_message != FALSE_MESSAGE);//wait
 
     semctl(id_sem_serv, 0, SETVAL, 1);
 
-    memset((*ptr_shmem_serv).message_text, 0, 256);
     strncpy((*ptr_shmem_serv).message_text, mess_send, 256);
     (*ptr_shmem_serv).type_message = TRUE_MESSAGE;
 

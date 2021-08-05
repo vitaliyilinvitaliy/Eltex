@@ -18,9 +18,9 @@
 #include <sys/msg.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
+#include <sys/mman.h>
 #include <pthread.h>
 #include <string.h>
-
 
 
 int Interface(void){
@@ -98,10 +98,15 @@ int Interface(void){
         CreateQueueSystemV(my_queue);
     #endif //SYSTEM_V
 
-    #if REALIZATION == SHARED_MEMORY
+    #if REALIZATION == SHARED_MEMORY_SYSTEM_V
         CreateShMemSystemV(my_queue);
     #endif //SHARED_MEMORY
     
+    #if REALIZATION == SHARED_MEMORY_POSIX
+        CreateShMemPOSIX((*my_param).name, my_queue);
+    #endif //SHARED_MEMORY
+    
+
     (*my_param).parameters_queue = my_queue;
 
     pthread_t tid; 
@@ -125,7 +130,7 @@ int Interface(void){
         //ctl_stat = ;
     #endif //SYSTEM_V
 
-    #if REALIZATION == SHARED_MEMORY
+    #if REALIZATION == SHARED_MEMORY_SYSTEM_V
         ctl_stat = semctl((*my_queue).id_sem, 0, IPC_RMID, NULL);
 
         if(ctl_stat == -1){
@@ -143,8 +148,18 @@ int Interface(void){
         shmdt((*my_queue).ptr_shmem);
         shmdt((*my_queue).ptr_serv_shmem);
     
-    #endif //SHARED_MEMORY
+    #endif //SHARED_MEMORY_SYSTEM_V
     
+    #if REALIZATION == SHARED_MEMORY_POSIX
+        sem_close((*my_queue).sem);
+        sem_close((*my_queue).serv_sem);
+        //sem_unlink((*my_param).name);
+        //sem_unlink(SERVER_NAME);
+        //shm_unlink((*my_param).name);
+        //shm_unlink(SERVER_NAME);
+        //munmap((*my_queue).ptr_shmem, sizeof(struct shared_message_POSIX));
+        //munmap((*my_queue).ptr_serv_shmem, sizeof(struct shared_message));
+    #endif //SHARED_MEMORY_POSIX
 
     free(size_chat_input);
     free(my_queue);

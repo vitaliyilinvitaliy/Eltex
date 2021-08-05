@@ -14,7 +14,7 @@ struct client_shm
 {
     int id_shm;
     int id_sem;
-    struct shared_message *ptr_shm;
+    struct shared_message_system_v *ptr_shm;
 };
 
 
@@ -33,7 +33,7 @@ int main(){
 
     bool flag_stop = false;
 
-    struct shared_message *ptr_shared_mem = NULL;    
+    struct shared_message_system_v *ptr_shared_mem = NULL;    
 
     printf("< Start server >\n");
 
@@ -44,7 +44,7 @@ int main(){
         exit(EXIT_FAILURE);
     }
 
-    id_segment = shmget(server_key, sizeof(struct shared_message), IPC_CREAT|MODE);
+    id_segment = shmget(server_key, sizeof(struct shared_message_system_v), IPC_CREAT|MODE);
 
     if(id_segment == -1){
         perror("shmget");
@@ -76,14 +76,6 @@ int main(){
         switch (ptr_shared_mem->type_message)
         {
         case FALSE_MESSAGE:
-            /*if(semctl(id_sem_mass, 0, GETVAL, 0)) continue;
-
-            semctl(id_sem_mass, 0 ,SETVAL, 1);
-
-            if(ptr_shared_mem->type_message == TRUE_MESSAGE){
-                printf("1");
-            }*/
-
             break;
         
         case TRUE_MESSAGE:

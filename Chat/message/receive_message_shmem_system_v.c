@@ -21,11 +21,11 @@ void *ReceiveMessageShMemSystemV(void *args){
     struct parameters_shmem_system_v *shmem_par = (struct parameters_shmem_system_v *) (*my_param).parameters_queue;
     int id_sem = (*shmem_par).id_sem;
     int id_shm = (*shmem_par).id_shmem;
-    struct shared_message *ptr_shm = (*shmem_par).ptr_shmem;
+    struct shared_message_system_v *ptr_shm = (*shmem_par).ptr_shmem;
 
     int id_serv_sem = (*shmem_par).id_serv_sem;
     int id_serv_shm = (*shmem_par).id_serv_shmem;
-    struct shared_message *ptr_shm_serv = (*shmem_par).ptr_serv_shmem;
+    struct shared_message_system_v *ptr_shm_serv = (*shmem_par).ptr_serv_shmem;
     
 
     if(ptr_shm_serv == NULL){

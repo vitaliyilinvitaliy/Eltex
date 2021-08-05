@@ -20,12 +20,10 @@ int InitInput(int x, int y, int horizontal, int vertical){
 }
 
 int Input(WINDOW *win, struct my_parameters *params){
-    char *message = NULL;
+    char message[256] = {0};
     int pos_x = 1, pos_y = 1, pos = 0;
     int x = 0, y = 0;
     int ch = -1;
-
-    message = calloc(sizeof(char), (w_vertic - 2) * (w_horiz - 2));
 
     if(message == NULL){
         return 1;
@@ -92,7 +90,6 @@ int Input(WINDOW *win, struct my_parameters *params){
         refresh();
     }
 
-    free(message);
     return 0;
 }
 
