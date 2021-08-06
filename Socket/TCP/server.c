@@ -26,8 +26,6 @@ int main(void){
 int Server(void){
     char str_time[40] = {0};
 
-    GetTime(str_time);
-
     /*sockaddr_XX (XX - суффикс, обозначающий домен: "un" - Unix, "in" - Internet и т. д.).*/
     struct sockaddr_un addr, client_addr;
 
@@ -66,13 +64,15 @@ int Server(void){
     if((fd_client_socket = accept(fd_socket,(struct sockaddr*) &client_addr, &sockl)) == -1)
         handle_error("accept");
 
+    GetTime(str_time);
+
     /*Функция send используется для отправки данных */
     if(send(fd_client_socket,(void*) str_time, 40, 0/*флаги не используются*/) == -1);
 
     close(fd_client_socket);
     close(fd_socket);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int GetTime(char *str_time){

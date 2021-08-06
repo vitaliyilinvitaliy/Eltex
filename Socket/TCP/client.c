@@ -40,4 +40,6 @@ int Client(void){
     printf("Time: %s\n", str_time);
 
     close(fd_socket);
+
+    return EXIT_SUCCESS;
 }
