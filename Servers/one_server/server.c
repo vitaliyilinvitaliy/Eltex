@@ -55,6 +55,8 @@ int ServerNTP(void){
 
         recvfrom(fd_serv_socket, (void*)str_client_name, SIZE_CLIENT_NAME, 0, (struct sockaddr*)&client, &get_size);
         
+        sleep(10);
+
         strncat(send_message, "Hi, ", SIZE_SEND_MESSAGE);
         strncat(send_message, str_client_name, SIZE_SEND_MESSAGE);
         strncat(send_message, " current time: ", SIZE_SEND_MESSAGE);
