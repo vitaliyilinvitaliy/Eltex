@@ -14,13 +14,13 @@
 
 //gcc ./one_server/server.c ./time/time.c -o serv_one
 
-int ServerNTP(void);
+int ServerNtp(void);
 
 int main(void){
-    ServerNTP();
+    return ServerNtp();
 }
 
-int ServerNTP(void){
+int ServerNtp(void){
     int fd_serv_socket = -1;
     int counter_client = 0;
     struct sockaddr_in server, client;
@@ -49,13 +49,15 @@ int ServerNTP(void){
         handler_error("bind");
     }
 
+    socklen_t get_size = 0;
+
     while(counter_client < MAX_CLIETNS)
     {
-        socklen_t get_size = size_sockaddr_in;
+        get_size = size_sockaddr_in;
 
         recvfrom(fd_serv_socket, (void*)str_client_name, SIZE_CLIENT_NAME, 0, (struct sockaddr*)&client, &get_size);
         
-        sleep(10);
+        sleep(10);//имитация деятельности
 
         strncat(send_message, "Hi, ", SIZE_SEND_MESSAGE);
         strncat(send_message, str_client_name, SIZE_SEND_MESSAGE);
