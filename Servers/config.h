@@ -6,7 +6,11 @@
 #define SIZE_SEND_MESSAGE 256 
 #define SERVER_PORT 7777
 
+#define MODE_OPEN 0666
+#define NAME_QUEUE "../queue.txt"
 
 #define MAX_CLIETNS 3
+#define SIZE_POOL 5
+
 
 #endif //_CONFIG_H_
