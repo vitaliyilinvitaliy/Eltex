@@ -1,4 +1,5 @@
-#include "config.h"
+#include "../config.h"
+#include "network_lvl/udp.h"
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -44,9 +45,9 @@ int Client(void){
 
     memcpy((void*)buf + SOURCE_PORT_OFFSET, &source_port, sizeof(short));
     memcpy((void*)buf +  DESTINATION_PORT_OFFSET, &destination_port, sizeof(short));
-    memcpy((void*)buf + LENGTH_OFFSET, &length_pack, sizeof(short));
-    memcpy((void*)buf + CHECKSUM_OFFSET, &check_sum, sizeof(short));
-    memcpy((void*)buf + DESTINATION_OFFSET, str_hello, 7);
+    memcpy((void*)buf + UDP_LENGTH_OFFSET, &length_pack, sizeof(short));
+    memcpy((void*)buf + UDP_CHECKSUM_OFFSET, &check_sum, sizeof(short));
+    memcpy((void*)buf + UDP_PAYLOAD_OFFSET, str_hello, 7);
 
     struct sockaddr_in server;
     server.sin_family = AF_INET;
