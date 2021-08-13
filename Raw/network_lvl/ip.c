@@ -9,7 +9,7 @@
 
 int FillIpHeader(char *ip_header, unsigned short payload_len){
     
-    short n_ver_ihl = htons(0x45);
+    short n_ver_ihl = 0x45;
     /*
     VER - 4 бита. Версия - IPv4 = 4 = 0100(в двоичной системе)
     IHL - 4 бита. Длина заголовка пакета в 32 битных словах.
@@ -18,7 +18,7 @@ int FillIpHeader(char *ip_header, unsigned short payload_len){
         5 = 0101
         Итоговое число - 1 байт: 0100 01001 = 0x45
     */
-    short n_ds = htons(0x00);
+    short n_ds = 0x00;
     /*
     1 байт
     DS - (Набор флагов) Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
@@ -44,12 +44,12 @@ int FillIpHeader(char *ip_header, unsigned short payload_len){
     0х4000 = 0100 0000 0000 0000
     2 bit == 0 => не фрагментируем
     */
-    short n_ttl = htons(255);
+    short n_ttl = 255;
     /*
     1 байт
     TTL - число маршрутизаторов через которые может пройти пакет.
     */
-    short n_protocol = htons(17);
+    short n_protocol = 17;
     /*
     1 байт
     Поле протокола верхнего уровня занимает один байт и содержит идентификатор, 
@@ -85,13 +85,13 @@ int FillIpHeader(char *ip_header, unsigned short payload_len){
     Адрес приемника 4 байта
     */
 
-    memcpy((void*)ip_header + VER_IHL_OFFSET, ((void*)&n_ver_ihl) + 1, VER_IHL_SIZEOF);
-    memcpy((void*)ip_header + DS_OFFSET, ((void*)&n_ds) + 1, DS_SIZEOF);
+    memcpy((void*)ip_header + VER_IHL_OFFSET, ((void*)&n_ver_ihl), VER_IHL_SIZEOF);
+    memcpy((void*)ip_header + DS_OFFSET, ((void*)&n_ds), DS_SIZEOF);
     memcpy((void*)ip_header + LENGTH_OFFSET, (void*)&n_length, IP_LENGTH_SIZEOF);
     memcpy((void*)ip_header + IDENTIFICATION_OFFSET, (void*)&n_identification, IDENTIFICATION_SIZEOF);
     memcpy((void*)ip_header + FLAGS_OFFS_OFFSET, (void*)&n_flags_offset, FLAGS_OFFS_SIZEOF);
-    memcpy((void*)ip_header + TTL_OFFSET, ((void*)&n_ttl) + 1, TTL_SIZEOF);
-    memcpy((void*)ip_header + PROTOCOL_OFFSET, ((void*)&n_protocol) + 1, PROTOCOL_SIZEOF);
+    memcpy((void*)ip_header + TTL_OFFSET, ((void*)&n_ttl), TTL_SIZEOF);
+    memcpy((void*)ip_header + PROTOCOL_OFFSET, ((void*)&n_protocol), PROTOCOL_SIZEOF);
     memcpy((void*)ip_header + CHECKSUM_OFFSET, (void*)&n_checksum, IP_CHECKSUM_SIZEOF);
     memcpy((void*)ip_header + SOURCE_IP_OFFSET, (void*)&n_sourse_ip, SOURCE_IP_SIZEOF);
     memcpy((void*)ip_header + DESTINATION_IP_OFFSET, (void*)&n_destanation_ip, DESTINATION_IP_SIZEOF);
