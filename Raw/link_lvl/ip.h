@@ -1,0 +1,31 @@
+#ifndef _IP_H_
+#define _IP_H_
+
+#define IP_SIZEOF 20
+
+#define VER_IHL_OFFSET 0
+#define DS_OFFSET 1
+#define LENGTH_OFFSET 2
+#define IDENTIFICATION_OFFSET 4
+#define FLAGS_OFFS_OFFSET 6
+#define TTL_OFFSET 8
+#define PROTOCOL_OFFSET 9
+#define CHECKSUM_OFFSET 10
+#define SOURCE_IP_OFFSET 12
+#define DESTINATION_IP_OFFSET 16
+#define PAYLOAD_OFFSET 20
+
+#define VER_IHL_SIZEOF 1
+#define DS_SIZEOF 1
+#define IP_LENGTH_SIZEOF 2
+#define IDENTIFICATION_SIZEOF 2
+#define FLAGS_OFFS_SIZEOF 2
+#define TTL_SIZEOF 1
+#define PROTOCOL_SIZEOF 1
+#define IP_CHECKSUM_SIZEOF 2
+#define SOURCE_IP_SIZEOF 4
+#define DESTINATION_IP_SIZEOF 4
+
+int FillIpHeader(char *, unsigned short);
+
+#endif //_IP_H_

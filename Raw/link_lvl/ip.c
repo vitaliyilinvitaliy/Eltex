@@ -1,6 +1,7 @@
 #include "../config.h"
 #include "ip.h"
 #include "udp.h"
+#include "chsum.h"
 
 #include <netinet/in.h>
 #include <string.h>
@@ -103,6 +104,11 @@ int FillIpHeader(char *ip_header, unsigned short payload_len){
     memcpy((void*)ip_header + CHECKSUM_OFFSET, (void*)&n_checksum, IP_CHECKSUM_SIZEOF);
     memcpy((void*)ip_header + SOURCE_IP_OFFSET, (void*)&n_sourse_ip, SOURCE_IP_SIZEOF);
     memcpy((void*)ip_header + DESTINATION_IP_OFFSET, (void*)&n_destanation_ip, DESTINATION_IP_SIZEOF);
+
+    n_checksum = CheckSum(ip_header);
+
+    memcpy((void*)ip_header + CHECKSUM_OFFSET, (void*)&n_checksum, IP_CHECKSUM_SIZEOF);
+
 
     return 0;
 }

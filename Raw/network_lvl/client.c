@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <arpa/inet.h>
 
 //gcc client.c udp.c ip.c packet.c -o client
 
@@ -46,8 +47,10 @@ int Client(void){
     memset((void*)&server, 0, sizeof(struct sockaddr_in));
 
     server.sin_family = AF_INET;
-    server.sin_port = htons(7777);
-    server.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    server.sin_port = htons(PORT_SERVER);
+    struct in_addr addr;
+    inet_aton("172.17.0.3", &addr);
+    server.sin_addr.s_addr = addr.s_addr;//htonl(INADDR_LOOPBACK);
 
     char *packet = NULL;
 
